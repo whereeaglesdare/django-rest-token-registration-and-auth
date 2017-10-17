@@ -53,12 +53,3 @@ def restore_password(request):
     except Exception as e:
         print(e)
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['POST'])
-def login(request):
-    serializer = AuthTokenSerializer(data=request.data)
-    if serializer.is_valid():
-        token = Token.objects.get(user__username=request.data['username'])
-        return Response({'token': token.key}, status=status.HTTP_200_OK)
-    else:
-        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)

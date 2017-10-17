@@ -8,5 +8,4 @@ urlpatterns = [
     url(r'^api-token-auth/', views.obtain_auth_token),
     url(r'^logout/$', logout),
     url(r'^forgot_password/$', restore_password),
-    url(r'^login/$', login)
 ]
