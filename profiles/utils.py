@@ -25,7 +25,7 @@ class EmailActivation(object):
 
     def key_expired(self, user):
         activated = RegistrationProfile.objects.get(user=user)
-        date_joined = activated.user__date_joined
+        date_joined = user.date_joined
         expiration_date = datetime.timedelta(days=self.days)
         if date_joined + expiration_date <= datetime_now():
             activated.activation_key = self.ACTIVATED
