@@ -52,10 +52,7 @@ class EmailActivation(object):
         ctx_dict = {'activation_key': user.api_registration_profile.activation_key,
                     'expiration_days': self.days,
                     'site': site}
-        subject = render_to_string('activation_email_subject.txt',
-                                   ctx_dict)
-        message = render_to_string('activation_email.txt',
-                                   ctx_dict)
+        subject = 'ACTIVATION KEY'
         message = str(ctx_dict)
         user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
 
