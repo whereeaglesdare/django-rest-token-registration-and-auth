@@ -2,13 +2,12 @@ import hashlib
 import random
 import re
 import datetime
-
+from rest_framework.views import exception_handler
 from django.conf import settings
 from django.utils.timezone import now as datetime_now
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
-from django.template.loader import render_to_string
-
+from django.http import JsonResponse
 from .models import RegistrationProfile
 
 
@@ -21,7 +20,7 @@ class EmailActivation(object):
     SHA1_RE = re.compile('^[a-f0-9]{40}$')
 
     def get_days(self):
-        return {'activation_days': str(self.days)}
+        return {'message': 'You are registered'}
 
     def key_expired(self, user):
         activated = RegistrationProfile.objects.get(user=user)
@@ -93,3 +92,10 @@ class EmailActivation(object):
         site = Site.objects.get_current()
         self.send_activation_email(new_user, site)
         return new_user
+
+
+def custom_exception_handler(exc, context):
+    # Call REST framework's default exception handler first,
+    # to get the standard error response.
+    response = exception_handler(exc, context)
+    return JsonResponse({'error': {'errors': [response.data]}, 'statusCode': response.status_code})
